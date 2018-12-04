@@ -43,7 +43,7 @@ Running this:
 yarn test src/features/Auth/__tests__/SignInLazy.spec.ts
 ```
 
-will test the lazy loaded component.  1 of the `console.log`'s will have the theme since they are in the parent component.  1 of them will not have the theme and will be an empty object.  That is from the lazy loaded component.
+will test the lazy loaded component.  1 of the `console.log`'s will have the theme since it is from the parent component.  1 of them will not have the theme and will be an empty object.  That is from the lazy loaded component.
 
 Output:
 
