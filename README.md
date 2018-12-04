@@ -1,44 +1,69 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Demo repo for Jest and Lazy loading issues
 
-## Available Scripts
+* When running the tests, the lazy loaded component will have an empty object for `props.theme`.
+* The non-lazy components load fine.
+* All components load fine when starting the app and loading it in a browser.
 
-In the project directory, you can run:
+## Run the test for the non-lazy component
 
-### `npm start`
+Running this:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+yarn test src/features/Auth/__tests__/SignIn.spec.ts
+```
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+will test the non-lazy component.  All `console.log`'s will have the theme properties.
 
-### `npm test`
+Output:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+yarn run v1.12.3
+$ jest src/features/Auth/__tests__/SignIn.spec.ts
+ PASS  src/features/Auth/__tests__/SignIn.spec.ts
+  ✓ should render (38ms)
 
-### `npm run build`
+  console.log src/features/Auth/Auth.tsx:27
+    { primary: '#000', background: '#fff' }
+  console.log src/features/Auth/SignIn.tsx:25
+    { primary: '#000', background: '#fff' }
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.978s, estimated 3s
+Ran all test suites matching /src\/features\/Auth\/__tests__\/SignIn.spec.ts/i.
+✨  Done in 3.55s.
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Run the test for the lazy component
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Running this:
 
-### `npm run eject`
+```sh
+yarn test src/features/Auth/__tests__/SignInLazy.spec.ts
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+will test the lazy loaded component.  2 of the `console.log`'s will have the theme since they are in the parent component.  2 of them will not have the theme and will be an empty object.  Those are from the lazy loaded component.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Output:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+yarn run v1.12.3
+$ jest src/features/Auth/__tests__/SignInLazy.spec.ts
+  console.log src/features/Auth/Auth.tsx:27
+    { primary: '#000', background: '#fff' }
+  console.log src/features/Auth/SignInLazy.tsx:25
+    {}
+  console.error src/features/Auth/SignInLazy.tsx:31
+    Theme is not there!!!!!!!
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+ PASS  src/features/Auth/__tests__/SignInLazy.spec.ts
+  ✓ should render (268ms)
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.373s, estimated 3s
+Ran all test suites matching /src\/features\/Auth\/__tests__\/SignInLazy.spec.ts/i.
+✨  Done in 2.84s.
+```

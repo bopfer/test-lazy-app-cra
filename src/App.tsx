@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Router } from '@reach/router';
+
+import { ThemeProvider, themes } from './theme';
+import { Home } from './features/Home';
+import { Auth } from './features/Auth';
 
 class App extends Component {
-  render() {
+  public render() {
+    const theme = 'light';
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <ThemeProvider theme={themes[theme]}>
+        <Router>
+          <Home path="/" />
+          <Auth path="auth/*" />
+        </Router>
+      </ThemeProvider>
     );
   }
 }
 
-export default App;
+export { App };
